@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formular Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<form id="dispensform">
+    <h1>Dispensationsgesuchsformular</h1>
+    <!-- Formularelemente -->
+    <label for="anrede">Anrede:</label>
+    <select id="anrede" name="anrede" required>
+        <option value="mr">Mr.</option>
+        <option value="mrs">Mrs.</option>
+        <option value="none">None</option>
+    </select>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="vorname">Vorname:</label>
+    <input type="text" id="vorname" name="vorname" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="mobile">Mobile:</label>
+    <input type="text" id="mobile" name="mobile" required>
+
+    <label for="klasse">Klasse:</label>
+    <input type="text" id="klasse" name="klasse" required>
+
+    <label for="lehrberuf">Lehrberuf:</label>
+    <input type="text" id="lehrberuf" name="lehrberuf" required>
+
+    <label for="standort">Standort:</label>
+    <input type="text" id="standort" name="standort" required>
+
+    <label for="abwvon">Anfangsdatum:</label>
+    <input type="date" id="abwvon" name="abwvon" required>
+
+    <label for="abwbis">Enddatum:</label>
+    <input type="date" id="abwbis" name="abwbis" required>
+
+    <label for="grund">Grund:</label>
+    <select id="grund" name="grund" required>
+        <option value="grund1">Operation</option>
+        <option value="grund2">Beerdigung</option>
+        <option value="grund3">Ferien</option>
+        <option value="grund4">Geschäftsevent</option>
+    </select>
+
+    <label for="anzlek">Anzahl Lektionen:</label>
+    <input type="text" id="anzlek" name="anzlek" required>
+
+    <label for="betrlp">Betroffene Lehrpersonen:</label>
+    <input type="text" id="betrlp" name="betrlp" required>
+
+    <label for="bemmit">Bemerkungen/Mitteilungen:</label>
+    <input type="text" id="bemmit" name="bemmit" required>
+
+
+    <button class="button-64" role="button" onclick="submitForm()"><span class="text">Formular abschicken</span></button>
+</form>
+
+<script src="script.js"></script>
+</body>
+</html>
