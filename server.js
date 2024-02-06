@@ -18,8 +18,10 @@ const express = require('express');
 var app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
+const http = require("http");
 
 const port = 3000;
+
 
 app.use(bodyParser.json());
 
@@ -63,13 +65,15 @@ app.get('/user', (req, res) => {
         if (!err) {
             console.log(rows);
             res.send(rows);
+
+
         } else {
             console.log(err);
         }
 
     })
 });
-
+/*
 //Zeigt nur einer mit user/:id
 app.get('/user/:userID', (req, res) => {
     connection.query('SELECT * FROM user WHERE userID = ?', [req.params.userID], (err, rows, fields) => {
@@ -81,14 +85,50 @@ app.get('/user/:userID', (req, res) => {
         }
 
     })
+}); */
+
+//Zeigt nur einer mit user/:id
+app.get('/user/:userID', (req, res) => {
+    connection.query('SELECT u.userID, u.name, u.surname, l.username, loc.location, g.gender\n' +
+        'FROM user AS u\n' +
+        'INNER JOIN login AS l ON u.loginID = l.loginID\n' +
+        'INNER JOIN locations AS loc ON u.locationID = loc.locationID\n' +
+        'INNER JOIN gender AS g ON u.genderID = g.genderID\n' +
+        'WHERE u.userID = ?', [req.params.userID], (err, rows, fields) => {
+        if (!err) {
+            console.log(rows);
+            res.send(rows);
+        } else {
+            console.log(err);
+        }
+
+    })
 });
 
 //löscht einen user mit user/:id
-app.delete('/user/:userID', (req, res) => {
-    connection.query(' DELETE FROM user WHERE userID = ?', [req.params.userID], (err, rows, fields) => {
+app.get('/dispens/', (req, res) => {
+    connection.query('SELECT\n' +
+        '    d.dispensationID,\n' +
+        '    u.name AS userName,\n' +
+        '    u.surname AS userSurname,\n' +
+        '    j.job,\n' +
+        '    l.lession,\n' +
+        '    f.file,\n' +
+        '    r.reason,\n' +
+        '    d.comment,\n' +
+        '    CASE WHEN d.work_check = 1 THEN \'Genehmigt\' ELSE \'Nicht genehmigt\' END AS Genehmigung,\n' +
+        '    d.start_date,\n' +
+        '    d.end_date\n' +
+        'FROM `dispens` AS d\n' +
+        'INNER JOIN `user` AS u ON d.userID = u.userID\n' +
+        'INNER JOIN `jobs` AS j ON d.jobID = j.jobID\n' +
+        'INNER JOIN `lessions` AS l ON d.lessionID = l.lessionID\n' +
+        'INNER JOIN `files` AS f ON d.fileID = f.fileID\n' +
+        'INNER JOIN `reason` AS r ON d.reasonID = r.reasonID\n' +
+        'ORDER BY d.dispensationID ASC;', [req.params.userID], (err, rows, fields) => {
         if (!err) {
-            res.send('Delete operation was successful')
-            // res.send(rows)
+            console.log(rows);
+            res.send(rows);
         } else {
             console.log(err);
         }
@@ -100,21 +140,15 @@ app.delete('/user/:userID', (req, res) => {
 
 //Test
 /*
-window.onload = function() {
-    // Hier können Sie auf das document-Objekt zugreifen
-    index.html
-};
+http.createServer((request, response) =>{
 
-
-const tableBody = document.getElementById('table-body');
-
-results.forEach((row) => {
-    const tr = document.createElement('tr');
-
-    Object.values(row).forEach((value) => {
-        const td = document.createElement('td');
-        td.textContent = value;
-        tr.appendChild(td);
+    response.writeHead(200, {
+        'Content-Type' : 'text/html'
     });
+
+    response.write('<h1>Hello World</h1>');
+
+    response.end();
+
 })
-*/
+ */
