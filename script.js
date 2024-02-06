@@ -1,5 +1,5 @@
 const http = require('http');
-const mysql = require("mysql");
+const mysql = require('mysql');
 const express = require('express');
 var app = express();
 const path = require('path');
@@ -20,6 +20,11 @@ const connection = mysql.createConnection(config)
 connection.connect(function(err) {
     if (err) throw err;
     console.log('Connected to MySQL database:', connection.config.database);
+});
+
+app.get('/select_user', (req, res) => {
+    var html = '<form action="/user/" method="post"><label for="id">User ID:</label><br><input type="text" id="id" name="id"><br><br><input type="submit" value="Submit"></form>';
+    res.send(html);
 });
 
 
@@ -44,15 +49,14 @@ app.get('/user', (req, res) => {
 
     })
 });
-
-app.post('/user/:id', (req, res) => {
+app.get('/user/:userid', (req, res) => {
     connection.query('SELECT u.userID, u.name, u.surname, l.username, loc.location, g.gender\n' +
         'FROM user AS u\n' +
         'INNER JOIN login AS l ON u.loginID = l.loginID\n' +
         'INNER JOIN locations AS loc ON u.locationID = loc.locationID\n' +
         'INNER JOIN gender AS g ON u.genderID = g.genderID\n' +
         'WHERE u.userID = ?\n' +
-        'ORDER BY u.userID', [req.params.id], (err, rows, fields) => {
+        'ORDER BY u.userID', [req.params.userid], (err, rows, fields) => {
         if (!err) {
             console.log(rows);
             var html = '<table><tr><th>User ID</th><th>Name</th><th>Surname</th><th>Username</th><th>Location</th><th>Gender</th></tr>';
@@ -66,11 +70,6 @@ app.post('/user/:id', (req, res) => {
         }
 
     })
-});
-
-app.get('/select_user', (req, res) => {
-    var html = '<form action="/user/id/" method="post"><label for="id">User ID:</label><br><input type="text" id="id" name="id"><br><br><input type="submit" value="Submit"></form>';
-    res.send(html);
 });
 
 http.createServer(app).listen(3000, () => {
