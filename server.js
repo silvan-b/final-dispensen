@@ -13,6 +13,8 @@
 ** ***************************************************************************************** */
 // Referenz: www.npmjs.com/package/mysql
 
+//Irrelevantes File, nur Tests
+
 const mysql = require("mysql");
 const express = require('express');
 var app = express();
