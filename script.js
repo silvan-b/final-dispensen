@@ -38,7 +38,7 @@ connection.connect(function(err) {
     console.log('Connected to MySQL database:', connection.config.database);
 });
 
-//User auswählen mit submit button
+//User auswählen mit Submit Button
 
 app.get('/select_user', (req, res) => {
     var html = '<form action="/user/" method="get"><label for="id">User ID:</label><br><input type="text" id="id" name="id"><br><br><input type="submit" value="Submit"></form>';
@@ -89,6 +89,9 @@ app.get('/user/:userId', (req, res) => {
     });
 });
 
+//Users werden nicht dargestellt? - Darum Auskommentiert
+
+/*
 app.get('/users/', (req, res) => {
     connection.query('SELECT u.userID, u.name, u.surname, l.username, loc.location, g.gender\n' +
         'FROM user AS u\n' +
@@ -99,7 +102,7 @@ app.get('/users/', (req, res) => {
         if (rows.length > 0) {
             const userData = rows[0];
             var html = '<style>\n' +
-                '        /* Basic table styling */\n' +
+                '        /* Basic table styling *//*\n' +
                 '        table {\n' +
                 '            border-collapse: collapse;\n' +
                 '            width: 100%;\n' +
@@ -123,9 +126,9 @@ app.get('/users/', (req, res) => {
 
     })
 });
+*/
 
-
-
+//einzelnen User mit ID zeigen
 app.post('/user/', (req, res) => {
     const userId = req.body.id;
     console.log("User ID submitted:", userId); // Check if the user ID is received correctly
@@ -168,7 +171,7 @@ app.post('/user/', (req, res) => {
     });
 });
 
-
+//Falls keine ID Angegeben, Error Message, Sonst anzeige von User
 app.get('/user', (req, res) => {
     const userId = req.query.id; // Get the user ID from the query parameters
 
@@ -216,6 +219,8 @@ app.get('/user', (req, res) => {
 });
 
 
+//Anzeigen alle User ohne Styling via html (zeigt gleich wie Postman)
+
 app.get('/allusers/', (req, res) => {
     connection.query('SELECT u.userID, u.name, u.surname, l.username, loc.location, g.gender\n' +
         'FROM user AS u\n' +
@@ -233,7 +238,7 @@ app.get('/allusers/', (req, res) => {
     })
 });
 
-
+//Löschen von einem User, nach / wird ID eingegeben
 app.delete('/delete/:userID', (req, res) => {
     connection.query(' DELETE FROM user WHERE userID = ?', [req.params.userID], (err, rows, fields) => {
         if (!err) {
@@ -246,7 +251,7 @@ app.delete('/delete/:userID', (req, res) => {
     })
 });
 
-
+//Message in Console, dass connected ist
 http.createServer(app).listen(3000, () => {
     console.log('Server running at http://localhost:3000/');
 });
