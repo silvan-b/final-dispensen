@@ -1,3 +1,18 @@
+/* *******************************************************************************************
+* Autor: S.Buehlmann, C.Linder, 02/2024
+* *******************************************************************************************
+* Beschreibung:
+* Express-Server, welcher html pages ausführt zusammen mit Funktionen via MySql die Datenbanken anzeigen.
+* *******************************************************************************************
+* Hinweise
+* npm install node
+* npm init -y
+* npm install mysql
+* npm install body-parser
+* npm install express
+** ***************************************************************************************** */
+// Referenz: uebungen (www.ict.bzzlab.ch)
+
 const http = require('http');
 const mysql = require('mysql2');
 const express = require('express');
@@ -7,6 +22,7 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
+//connection zu DB
 
 const config = {
     host: 'localhost',
@@ -22,10 +38,14 @@ connection.connect(function(err) {
     console.log('Connected to MySQL database:', connection.config.database);
 });
 
+//User auswählen mit submit button
+
 app.get('/select_user', (req, res) => {
     var html = '<form action="/user/" method="get"><label for="id">User ID:</label><br><input type="text" id="id" name="id"><br><br><input type="submit" value="Submit"></form>';
     res.send(html);
 });
+
+//Auswahl User
 
 app.get('/user/:userId', (req, res) => {
     const userId = req.params.userId;
