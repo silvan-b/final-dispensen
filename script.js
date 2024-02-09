@@ -69,7 +69,7 @@ app.get('/user/:userId', (req, res) => {
     });
 });
 
-app.get('/users', (req, res) => {
+app.get('/users/', (req, res) => {
     connection.query('SELECT u.userID, u.name, u.surname, l.username, loc.location, g.gender\n' +
         'FROM user AS u\n' +
         'INNER JOIN login AS l ON u.loginID = l.loginID\n' +
@@ -195,6 +195,36 @@ app.get('/user', (req, res) => {
     });
 });
 
+
+app.get('/allusers/', (req, res) => {
+    connection.query('SELECT u.userID, u.name, u.surname, l.username, loc.location, g.gender\n' +
+        'FROM user AS u\n' +
+        'INNER JOIN login AS l ON u.loginID = l.loginID\n' +
+        'INNER JOIN locations AS loc ON u.locationID = loc.locationID\n' +
+        'INNER JOIN gender AS g ON u.genderID = g.genderID\n' +
+        'ORDER BY u.userID', [req.params.userID], (err, rows, fields) => {
+        if (!err) {
+            console.log(rows);
+            res.send(rows);
+        } else {
+            console.log(err);
+        }
+
+    })
+});
+
+
+app.delete('/delete/:userID', (req, res) => {
+    connection.query(' DELETE FROM user WHERE userID = ?', [req.params.userID], (err, rows, fields) => {
+        if (!err) {
+            res.send('Delete operation was successful')
+            // res.send(rows)
+        } else {
+            console.log(err);
+        }
+
+    })
+});
 
 
 http.createServer(app).listen(3000, () => {
