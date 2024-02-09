@@ -238,7 +238,7 @@ app.get('/allusers/', (req, res) => {
     })
 });
 
-//Löschen von einem User, nach / wird ID eingegeben
+//Löschen von einem User, nach / wird ID eingegeben - funktioniert über Postman
 app.delete('/delete/:userID', (req, res) => {
     connection.query(' DELETE FROM user WHERE userID = ?', [req.params.userID], (err, rows, fields) => {
         if (!err) {
